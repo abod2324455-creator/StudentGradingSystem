@@ -6,7 +6,7 @@ namespace StudentGradingSystem
 {
     internal class PercentageBasedPolicy : GradingPolicy
     {
-        public double CalculateFinalGrade(List<GradeComponent> gradeComponents)
+        public double CalculateFinalGradePerCourse(List<GradeComponent> gradeComponents)
         {
             double totalGrade = 0;
             foreach (var component in gradeComponents)

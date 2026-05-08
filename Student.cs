@@ -109,7 +109,7 @@ namespace StudentGradingSystem
                     Console.Write("Add new component ------- [y for yes] and [n for no] ------- (y / n) : ");
                     Answer = char.Parse(Console.ReadLine());
                 } while (Answer == 'y');
-                _Courses.Add(course); // After i put the component in the course i add it to list
+                student._Courses.Add(course); // After adding components to the course, attach it to the new student
                 Console.Write("Add new course ------- [y for yes] and [n for no] ------- (y / n) : ");
                 option = char.Parse(Console.ReadLine());
             } while (option == 'y');
@@ -126,7 +126,7 @@ namespace StudentGradingSystem
                 foreach (var student in _Students)
                 {
                     writer1.WriteLine(student.Name + "," + student.StudentID + "," + student.Department);
-                    foreach (var course in _Courses)
+                    foreach (var course in student._Courses)
                     {
                         writer1.WriteLine(course.CourseCode + "," + course.CourseName + "," + course.CreditHours);
                         foreach (var component in course._GradeComponent)
@@ -231,6 +231,13 @@ namespace StudentGradingSystem
             }
             else
             {
+                // show loaded students so the user knows which ID to enter
+                Console.WriteLine("Available students:");
+                foreach (var student in _Students)
+                {
+                    Console.WriteLine($"ID: {student.StudentID}, Name: {student.Name}, Department: {student.Department}");
+                }
+
                 Console.Write("Enter Student ID to view report : ");
                 var id = int.Parse(Console.ReadLine());
                 foreach (var student in _Students)
@@ -251,6 +258,9 @@ namespace StudentGradingSystem
                                 Console.WriteLine($"{countcomponent}  Component name = {component.ComponentName}           Score = {component.Score}             Max score = {component.MaxScore}");
                             }
                         }
+
+                        double gpa = student.GPA(student._Courses);
+                        Console.WriteLine($"GPA = {gpa:F2}");
                     }
                 }
             }
@@ -261,36 +271,38 @@ namespace StudentGradingSystem
         public double Percentage (List <GradeComponent> gradeComponents)
         {
             PercentageBasedPolicy p = new PercentageBasedPolicy();
-            double TotalGrade= p.CalculateFinalGrade(gradeComponents);
-            if (TotalGrade >= 96)
+            double percentage= p.CalculateFinalGradePerCourse(gradeComponents);
+            if (percentage >= 96)
                 return 4;
-            else if (TotalGrade >= 92 && TotalGrade < 96)
+            else if (percentage >= 92 && percentage < 96)
                 return 3.7;
-            else if (TotalGrade >= 85 && TotalGrade < 92)
-                return 3.2;
-            else if (TotalGrade >= 79 && TotalGrade < 85)
-                return 2.9;
-            else if (TotalGrade >= 75 && TotalGrade < 79)
-                return 2.2;
-            else if (TotalGrade >= 65 && TotalGrade < 75)
-                return 1.8;
-            else if (TotalGrade >= 60 && TotalGrade < 65)
-                return 1.5;
-            else if (TotalGrade >= 55 && TotalGrade < 60)
-                return 1.2;
-            else if (TotalGrade >= 50 && TotalGrade < 55)
-                return 1;
+            else if (percentage >= 88 && percentage < 92)
+                return 3.3;
+            else if (percentage >= 84 && percentage < 88)
+                return 3.0;
+            else if (percentage >= 80 && percentage < 84)
+                return 2.7;
+            else if (percentage >= 76 && percentage < 80)
+                return 2.3;
+            else if (percentage >= 72 && percentage < 76)
+                return 2.0;
+            else if (percentage >= 68 && percentage < 72)
+                return 1.7;
+            else if (percentage >= 64 && percentage < 68)
+                return 1.3;
+            else if (percentage >= 60 && percentage < 64)
+                return 1.0;
             else
                 return 0;
         }
 
 
         /* ------------- GPA -------------- */
-        public double GPA()
+        public double GPA(List<Course> courses)
         {
             double totalpoint = 0;
             int hours = 0;
-            foreach ( var course in _Courses )
+            foreach ( var course in courses )
             {
                 totalpoint += Percentage(course._GradeComponent)*course.CreditHours;
                 hours += course.CreditHours;

@@ -6,6 +6,6 @@ namespace StudentGradingSystem
 {
     internal interface GradingPolicy
     {
-        double CalculateFinalGrade(List<GradeComponent> gradeComponents);
+        double CalculateFinalGradePerCourse(List<GradeComponent> gradeComponents);
     }
 }

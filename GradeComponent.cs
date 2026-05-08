@@ -7,7 +7,7 @@ namespace StudentGradingSystem
     public class GradeComponent
     {
         protected string _ComponentName;
-        protected double _Score ;
+        protected double _Score;
         protected double _MaxScore;
         protected double _Weight;
 
@@ -15,32 +15,34 @@ namespace StudentGradingSystem
         // Property
         public string ComponentName
         {
-            get { return _ComponentName; } 
+            get { return _ComponentName; }
             set { _ComponentName = value; }
         }
         public double Weight
         {
-            get { return _Weight; } 
-            set { 
+            get { return _Weight; }
+            set
+            {
                 if (value > 0)
-                    _Weight = value; 
-                else 
+                    _Weight = value;
+                else
                     _Weight = 0;
             }
         }
         public double Score
         {
-            get { return _Score; } 
-            set {
+            get { return _Score; }
+            set
+            {
                 if (value > 0)
-                  _Score = value;
-                else 
-                   _Score = 25;
+                    _Score = value;
+                else
+                    _Score = 25;
             }
         }
         public double MaxScore
         {
-            get { return _MaxScore; } 
+            get { return _MaxScore; }
             set
             {
                 if (value > 0)
@@ -57,14 +59,18 @@ namespace StudentGradingSystem
             _MaxScore = 0;
             _Score = 0;
             _ComponentName = "";
-            _Weight = 0; 
+            _Weight = 0;
         }
         public GradeComponent(string componentname, double score, double maxscore, double weight)
         {
-            MaxScore = maxscore;
-            Score = score;
             ComponentName = componentname;
-            _Weight = weight;
+            Score = score;
+            MaxScore = maxscore;
+            Weight = weight;
+        }
+        public void changescore(double newscore)
+        {
+            Score = newscore;
         }
     }
 }
